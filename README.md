@@ -8,7 +8,7 @@
 - **simple interface**: simple interface
 
 ## Planned *(maybe)* features:
-- **lock updates** prevent steam from updating a game no matter what
+- **lock updates**: prevent steam from updating a game no matter what
 - **roll back old updates**: lets you install old version of games
 
 
