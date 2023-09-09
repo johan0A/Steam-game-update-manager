@@ -1,6 +1,6 @@
 # Steam Game Update Manager
 
-![Icon](icon/path_to_icon_image.png) 
+![Icon](icon/icon.ico)
 
 ## Features
 
