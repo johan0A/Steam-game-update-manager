@@ -4,7 +4,6 @@ steam.monkey.patch_minimal()
 import requests
 from steam.client import SteamClient, EMsg
 
-
 import os
 import winreg
 import vdf

@@ -1,4 +1,4 @@
 @echo off
 pip install pyinstaller
-pyinstaller image_compressor.spec
+pyinstaller Steam-game-update-manager.spec
 pause
