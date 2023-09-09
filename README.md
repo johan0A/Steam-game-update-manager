@@ -22,7 +22,7 @@
 
 1. Clone the repository:
 ```
-git clone <repository-url>
+git clone https://github.com/johan0A/Steam-game-update-manager/tree/master
 ```
 2. Navigate to the project directory:
 ```
