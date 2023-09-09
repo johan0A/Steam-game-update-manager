@@ -13,5 +13,6 @@ build/
 *.bak
 *.orig
 *.db
+*.vscode
 .venv/
 venv/
