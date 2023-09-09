@@ -1,1 +1,1 @@
-# ImageCompressorApp
+# Steam-game-update-manager
