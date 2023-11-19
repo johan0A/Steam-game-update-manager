@@ -45,8 +45,3 @@ build_exe.bat
 1. Launch the application using `main.py` or the generated executable.
 2. Search for your game
 3. press skip update to skip the update
-
-
-## Contributing
-
-if you want to contribute huuu... dm me I guess ? idk how's this stuff done usually
