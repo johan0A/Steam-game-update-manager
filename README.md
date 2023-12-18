@@ -8,6 +8,7 @@
 - **simple interface**: simple interface
 
 ## Planned *(maybe)* features:
+- **linux support**: a linux build
 - **lock updates**: prevent steam from updating a game no matter what
 - **roll back old updates**: lets you install old version of games
 
