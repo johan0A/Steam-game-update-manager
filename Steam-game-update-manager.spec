@@ -29,11 +29,11 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='SkipUpdateApp',  # Modify the name of the application
+          name='SkipUpdateApp',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False,  # set to True if you want a console window to appear
-          icon="icon\icon.ico"  # Modify if you have a different icon or remove if you don't have an icon
+          console=False,
+          icon="icon\icon.ico"
 )
