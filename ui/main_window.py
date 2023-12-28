@@ -1,6 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox, QComboBox, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox, QComboBox, QHBoxLayout, QGridLayout
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
+from core.utility import App
+
 from core.utility import User_library
-import sys
+from ui.app_state_editor_window import App_state_editor
 
 class Main_window(QWidget):
     def __init__(self, parent=None):
@@ -26,7 +30,7 @@ class Main_window(QWidget):
             game_layout = QHBoxLayout()
             
             game_label = QLabel(self)
-            skip_button = QPushButton("Skip Update", self)
+            skip_button = QPushButton("edit state", self)
             # skip_button.clicked.connect(self.make_skip_update_handler(game_label.text()))
 
             game_layout.addWidget(game_label)
@@ -36,7 +40,7 @@ class Main_window(QWidget):
             self.game_widgets.append((game_label, skip_button))
 
         self.setLayout(layout)
-        self.setWindowTitle('Steam Skip Update')
+        self.setWindowTitle('Steam Game Update Manager')
         self.resize(600, 500)
 
         self.update_display()
@@ -78,9 +82,12 @@ class Main_window(QWidget):
                 
                 skip_button.show()
                 # skip_button.clicked.disconnect()
-                # skip_button.clicked.connect(self.make_skip_update_handler(app_name))
+                skip_button.clicked.connect(lambda: self.open_app_state_editor_window(app))
 
             except IndexError:
                 app_label.clear()
                 skip_button.hide()
-
+    
+    def open_app_state_editor_window(self, app):
+        self.app_state_editor_windows = App_state_editor(app)
+        self.app_state_editor_windows.show()

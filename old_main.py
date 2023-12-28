@@ -15,7 +15,6 @@ import json
 import steam.client
 import steam.client.cdn
 
-logging.basicConfig(format='[%(asctime)s] %(levelname)s %(name)s: %(message)s', level=logging.DEBUG)
 
 def find_steamapps():
     paths_to_check = [
