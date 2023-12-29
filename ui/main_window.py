@@ -46,17 +46,6 @@ class Main_window(QWidget):
 
         self.update_display()
 
-    # def make_skip_update_handler(self, game_name):
-    #     def handler():
-    #         try:
-    #             skip_update(self.steamapps_directory, game_name, self.cdnclient)
-    #             QMessageBox.information(self, "Success", f"Update skipped for {game_name}!")
-    #             self.update_display()
-    #         except Exception as e:
-    #             QMessageBox.critical(self, "Error", str(e))
-
-    #     return handler
-
     def update_display(self):
         search_query = self.search_bar.text().lower()
         
