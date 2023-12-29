@@ -2,6 +2,9 @@ import os
 import winreg
 import vdf
 
+import steam.client
+import steam.client.cdn
+
 def find_steamapps_path():
     paths_to_check = [
         os.path.join("C:", "Program Files (x86)", "Steam", "steamapps"),
@@ -30,8 +33,20 @@ def find_steamapps_path():
 def find_appmanifest_files(directory):
     return [os.path.join(directory, file) for file in os.listdir(directory) if "appmanifest" in file and os.path.isfile(os.path.join(directory, file))]
 
+class Steam_client():
+    def __init__(self):
+        self.steamclient = steam.client.SteamClient()
+        self.steamclient.anonymous_login()
+        self.cdnclient = steam.client.cdn.CDNClient(self.steamclient)
+    
+    def aninymous_login(self):
+        self.steamclient.anonymous_login()
+    
+    def get_app_depot_info(self, appID):
+        return self.cdnclient.get_app_depot_info(appID)
+
 class App():
-    def __init__(self, appmanifest_path):
+    def __init__(self, appmanifest_path, parent_library=None):
         self.appmanifest_path = appmanifest_path
         self.app_name = None
         self.app_id = None
@@ -39,6 +54,7 @@ class App():
         self.app_depot = None
         self.app_manifestID = None
         self.app_manifest = None
+        self.parent_library = None
         
         self.load_app()
         
@@ -51,6 +67,10 @@ class App():
             self.app_depot = data.get("AppState", {}).get("depots", "Unknown")
             self.app_manifestID = data.get("AppState", {}).get("manifest", "Unknown")
             self.app_manifest = data
+    
+    def save_app_manifest(self):
+        with open(self.appmanifest_path, 'w', encoding='utf-8') as f:
+            vdf.dump(self.app_manifest, f, pretty=True)
             
     def __repr__(self):
         return f"App({self.app_name}, {self.app_id}, {self.app_state}, {self.app_depot}, {self.app_manifestID})"
@@ -83,4 +103,4 @@ class User_library():
     def gather_library(self):
         appManifestPaths = find_appmanifest_files(self.steamapps_path)
         for path in appManifestPaths:
-            self.app_list.append(App(path))
+            self.app_list.append(App(path), parent_library=self)
