@@ -103,4 +103,4 @@ class User_library():
     def gather_library(self):
         appManifestPaths = find_appmanifest_files(self.steamapps_path)
         for path in appManifestPaths:
-            self.app_list.append(App(path), parent_library=self)
+            self.app_list.append(App(path, parent_library=self))
