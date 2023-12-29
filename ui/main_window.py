@@ -77,6 +77,6 @@ class Main_window(QWidget):
                 app_label.clear()
                 skip_button.hide()
     
-    def open_app_state_editor_window(self, app):
+    def open_app_state_editor_window(self, app: App):
         self.app_state_editor_windows = App_state_editor(app)
         self.app_state_editor_windows.show()

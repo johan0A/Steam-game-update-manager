@@ -16,6 +16,7 @@ class App_state_editor(QWidget):
         id_label = QLabel('App ID: ' + str(self.app.app_id))
 
         font = QFont()
+        font.setFamily('Comic Sans MS')
         font.setBold(True)
         font.setPointSize(14)
         title_label.setFont(font)
@@ -30,7 +31,7 @@ class App_state_editor(QWidget):
         self.setLayout(layout)
         self.setWindowTitle('app state editor; app: ' + self.app.app_name)
 
-        self.resize(600, 0)
+        self.geometry().center()
 
         self.update_display()
 
