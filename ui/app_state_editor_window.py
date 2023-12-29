@@ -30,6 +30,7 @@ class App_state_editor(QWidget):
         self.setLayout(layout)
         self.setWindowTitle('app state editor; app: ' + self.app.app_name)
 
+        self.resize(600, 0)
 
         self.update_display()
 

@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButto
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from core.utility import App
+import PyQt5.QtGui as QtGui
 
 from core.utility import User_library
 from ui.app_state_editor_window import App_state_editor
@@ -31,7 +32,6 @@ class Main_window(QWidget):
             
             game_label = QLabel(self)
             skip_button = QPushButton("edit state", self)
-            # skip_button.clicked.connect(self.make_skip_update_handler(game_label.text()))
 
             game_layout.addWidget(game_label)
             game_layout.addWidget(skip_button)
@@ -41,6 +41,7 @@ class Main_window(QWidget):
 
         self.setLayout(layout)
         self.setWindowTitle('Steam Game Update Manager')
+        self.setWindowIcon(QtGui.QIcon('icon/icon.ico'))
         self.resize(600, 500)
 
         self.update_display()
@@ -81,8 +82,7 @@ class Main_window(QWidget):
                 # game_label.setStyleSheet(f"color: {color}")
                 
                 skip_button.show()
-                # skip_button.clicked.disconnect()
-                skip_button.clicked.connect(lambda: self.open_app_state_editor_window(app))
+                skip_button.clicked.connect(lambda _, app=app: self.open_app_state_editor_window(app))
 
             except IndexError:
                 app_label.clear()
