@@ -1,9 +1,15 @@
 import os
 import winreg
 import vdf
+import json
+import time
+
+import tkinter as tk
+from tkinter import filedialog
 
 import steam.client
 import steam.client.cdn
+
 
 def find_steamapps_path():
     paths_to_check = [
@@ -31,6 +37,7 @@ def find_steamapps_path():
     return None
 
 def find_appmanifest_files(directory):
+    """Returns a list of paths to appmanifest files in the given directory."""
     return [os.path.join(directory, file) for file in os.listdir(directory) if "appmanifest" in file and os.path.isfile(os.path.join(directory, file))]
 
 class Steam_client():
@@ -71,6 +78,36 @@ class App():
     def save_app_manifest(self):
         with open(self.appmanifest_path, 'w', encoding='utf-8') as f:
             vdf.dump(self.app_manifest, f, pretty=True)
+    
+    def create_debug_folder(self):
+        if not os.path.exists("debug"):
+            os.mkdir("debug")
+
+    def debug_save_original_app_manifest_as_json(self):
+        root = tk.Tk()
+        root.withdraw()
+        self.create_debug_folder()
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON", "*.json")], initialfile=f"{self.app_name}_original.json", initialdir="debug")
+        root.destroy()
+        if file_path is None:
+            return False
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.app_manifest, f, indent=4)
+        return True
+    
+    def debug_save_app_manifest_as_json(self):
+        root = tk.Tk()
+        root.withdraw()
+        self.create_debug_folder()
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON", "*.json")], initialfile=f"{self.app_name}_modified.json", initialdir="debug")
+        root.destroy()
+        if file_path is None:
+            return False
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.app_manifest, f, indent=4)
+        return True
             
     def __repr__(self):
         return f"App({self.app_name}, {self.app_id}, {self.app_state}, {self.app_depot}, {self.app_manifestID})"

@@ -28,6 +28,14 @@ class App_state_editor(QWidget):
         layout.addWidget(title_label)
         layout.addWidget(id_label)
 
+        debug_save_original_app_manifest_as_json_button = QPushButton("Debug: Save original app manifest as JSON", self)
+        debug_save_original_app_manifest_as_json_button.clicked.connect(self.app.debug_save_original_app_manifest_as_json)
+        layout.addWidget(debug_save_original_app_manifest_as_json_button)
+
+        debug_save_app_manifest_as_json_button = QPushButton("Debug: Save app manifest as JSON", self)
+        debug_save_app_manifest_as_json_button.clicked.connect(self.app.debug_save_app_manifest_as_json)
+        layout.addWidget(debug_save_app_manifest_as_json_button)
+
         self.setLayout(layout)
         self.setWindowTitle('app state editor; app: ' + self.app.app_name)
 
