@@ -36,6 +36,10 @@ class App_state_editor(QWidget):
         debug_save_app_manifest_as_json_button.clicked.connect(self.app.debug_save_app_manifest_as_json)
         layout.addWidget(debug_save_app_manifest_as_json_button)
 
+        debug_save_depot_info_as_json_button = QPushButton("Debug: Save depot info as JSON", self)
+        debug_save_depot_info_as_json_button.clicked.connect(self.app.debug_save_depot_info_as_json)
+        layout.addWidget(debug_save_depot_info_as_json_button)
+
         self.setLayout(layout)
         self.setWindowTitle('app state editor; app: ' + self.app.app_name)
 

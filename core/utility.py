@@ -46,22 +46,41 @@ class Steam_client():
         self.steamclient.anonymous_login()
         self.cdnclient = steam.client.cdn.CDNClient(self.steamclient)
     
-    def aninymous_login(self):
+    def anonymous_login(self):
         self.steamclient.anonymous_login()
     
     def get_app_depot_info(self, appID):
         return self.cdnclient.get_app_depot_info(appID)
 
+class User_library():
+    def __init__(self):
+        self.steamapps_path = None
+        self.app_list = []
+        self.steamclient = Steam_client()
+    
+    def get_steamapps_path(self):
+        steampath = find_steamapps_path()
+        if steampath is not None:
+            self.steamapps_path = steampath
+            return True
+        else:
+            return False
+
+    def gather_library(self):
+        appManifestPaths = find_appmanifest_files(self.steamapps_path)
+        for path in appManifestPaths:
+            self.app_list.append(App(path, parent_library=self))
+
 class App():
     def __init__(self, appmanifest_path, parent_library=None):
         self.appmanifest_path = appmanifest_path
-        self.app_name = None
-        self.app_id = None
+        self.app_name: str = None
+        self.app_id: int = None
         self.app_state = None
         self.app_depot = None
         self.app_manifestID = None
         self.app_manifest = None
-        self.parent_library = None
+        self.parent_library: User_library = parent_library
         
         self.load_app()
         
@@ -69,7 +88,7 @@ class App():
         with open(self.appmanifest_path, 'r', encoding='utf-8') as f:
             data = vdf.load(f)
             self.app_name = data.get("AppState", {}).get("name", "Unknown")
-            self.app_id = data.get("AppState", {}).get("appid", "Unknown")
+            self.app_id = int(data.get("AppState", {}).get("appid", "Unknown"))
             self.app_state = data.get("AppState", {}).get("StateFlags", "Unknown")
             self.app_depot = data.get("AppState", {}).get("depots", "Unknown")
             self.app_manifestID = data.get("AppState", {}).get("manifest", "Unknown")
@@ -108,7 +127,23 @@ class App():
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(self.app_manifest, f, indent=4)
         return True
-            
+    
+    def debug_save_depot_info_as_json(self):
+        root = tk.Tk()
+        root.withdraw()
+        self.create_debug_folder()
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON", "*.json")], initialfile=f"{self.app_name}_depot_info.json", initialdir="debug")
+        root.destroy()
+        if file_path is None:
+            return False
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.get_depot_info(), f, indent=4)
+        return True
+    
+    def get_depot_info(self):
+        return self.parent_library.steamclient.get_app_depot_info(self.app_id)
+
     def __repr__(self):
         return f"App({self.app_name}, {self.app_id}, {self.app_state}, {self.app_depot}, {self.app_manifestID})"
     
@@ -123,21 +158,3 @@ class App():
     
     def __lt__(self, other):
         return
-
-class User_library():
-    def __init__(self):
-        self.steamapps_path = None
-        self.app_list = []
-    
-    def get_steamapps_path(self):
-        steampath = find_steamapps_path()
-        if steampath is not None:
-            self.steamapps_path = steampath
-            return True
-        else:
-            return False
-
-    def gather_library(self):
-        appManifestPaths = find_appmanifest_files(self.steamapps_path)
-        for path in appManifestPaths:
-            self.app_list.append(App(path, parent_library=self))
