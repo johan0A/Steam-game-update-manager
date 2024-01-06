@@ -10,7 +10,6 @@ from tkinter import filedialog
 import steam.client
 import steam.client.cdn
 
-
 def find_steamapps_path():
     paths_to_check = [
         os.path.join("C:", "Program Files (x86)", "Steam", "steamapps"),
@@ -52,6 +51,7 @@ class Steam_client():
     def get_app_depot_info(self, appID):
         return self.cdnclient.get_app_depot_info(appID)
 
+
 class User_library():
     def __init__(self):
         self.steamapps_path = None
@@ -77,7 +77,6 @@ class App():
         self.app_name: str = None
         self.app_id: int = None
         self.app_update_status = None
-        self.app_depot = None
         self.app_manifestID = None
         self.app_manifest = None
         self.parent_library: User_library = parent_library
@@ -89,7 +88,6 @@ class App():
             data = vdf.load(f)
             self.app_name = data.get("AppState", {}).get("name", "Unknown")
             self.app_id = int(data.get("AppState", {}).get("appid", "Unknown"))
-            self.app_depot = data.get("AppState", {}).get("depots", "Unknown")
             self.app_manifestID = data.get("AppState", {}).get("manifest", "Unknown")
             self.app_manifest = data
             self.app_state = data.get("AppState", {}).get("StateFlags", "Unknown")
@@ -146,6 +144,19 @@ class App():
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(self.get_depot_info(), f, indent=4)
         return True
+    
+    def get_manifestID_for_newest_app_version(self):
+        depot_info = self.get_depot_info()
+        return depot_info[self.app_depot]['manifests']['public']['gid']
+    
+    def get_depotID_of_app(self):
+        return list(self.app_manifest["AppState"]["InstalledDepots"].keys())[0]
+    
+    def get_manifest_for_newest_app_version(self):
+        depotID = self.get_depotID_of_app()
+        manifestID = self.get_manifestID_for_newest_app_version()
+        manifest = self.parent_library.steamclient.cdnclient.get_app_manifest(self.app_id, depotID, manifestID)
+        return vdf.loads(manifest.data)
     
     def get_depot_info(self):
         return self.parent_library.steamclient.get_app_depot_info(self.app_id)
