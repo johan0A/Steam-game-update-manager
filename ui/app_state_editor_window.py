@@ -62,10 +62,8 @@ class App_state_editor(QWidget):
             self.debug_menu.hide()
         else:
             self.debug_menu.show()
+        self.update_display()
     
     def update_display(self):
         # make the window the minimum size it can be without cutting off any text
-        self.setFixedSize(self.sizeHint())
-        # remove fixed size
-        self.setBaseSize(0, 0)
-        
+        self.adjustSize()

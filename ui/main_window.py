@@ -58,17 +58,10 @@ class Main_window(QWidget):
             try:
                 app = apps.pop(0)
                 app_name = app.app_name
-                # state_flags = game["state"]
+                update_status = app.app_update_status
                 
-                # color_map = {
-                #     '4': ('green', 'Has no updates'),
-                #     '6': ('red', 'Has an update')
-                # }
-                # color, state_msg = color_map.get(state_flags, ('yellow', 'Other'))
-
-                # game_label.setText(f"{game_name} - {state_msg}")
-                app_label.setText(f"{app_name}")
-                # game_label.setStyleSheet(f"color: {color}")
+                app_label.setText(f"{app_name} - {update_status['text']}")
+                app_label.setStyleSheet(f"color: {update_status['color']}")
                 
                 skip_button.show()
                 skip_button.clicked.connect(lambda _, app=app: self.open_app_state_editor_window(app))

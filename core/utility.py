@@ -76,7 +76,7 @@ class App():
         self.appmanifest_path = appmanifest_path
         self.app_name: str = None
         self.app_id: int = None
-        self.app_state = None
+        self.app_update_status = None
         self.app_depot = None
         self.app_manifestID = None
         self.app_manifest = None
@@ -89,11 +89,17 @@ class App():
             data = vdf.load(f)
             self.app_name = data.get("AppState", {}).get("name", "Unknown")
             self.app_id = int(data.get("AppState", {}).get("appid", "Unknown"))
-            self.app_state = data.get("AppState", {}).get("StateFlags", "Unknown")
             self.app_depot = data.get("AppState", {}).get("depots", "Unknown")
             self.app_manifestID = data.get("AppState", {}).get("manifest", "Unknown")
             self.app_manifest = data
-    
+            self.app_state = data.get("AppState", {}).get("StateFlags", "Unknown")
+            
+            possible_states = {
+                '4': {'color': 'green', 'text': 'Has no updates'},
+                '6': {'color': 'red', 'text': 'Has an update'},
+            }
+            self.app_update_status = possible_states.get(self.app_state, {'color': 'yellow', 'text': 'Other'})
+
     def save_app_manifest(self):
         with open(self.appmanifest_path, 'w', encoding='utf-8') as f:
             vdf.dump(self.app_manifest, f, pretty=True)
