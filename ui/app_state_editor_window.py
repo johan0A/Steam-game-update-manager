@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox, QComboBox, QHBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox, QComboBox, QHBoxLayout, QGridLayout, QCheckBox
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from core.utility import App
@@ -7,6 +7,7 @@ class App_state_editor(QWidget):
     def __init__(self, app: App, parent=None):
         super(App_state_editor, self).__init__(parent)
         self.app = app
+        self.debug_menu = QWidget()
         self.initUI()
 
     def initUI(self):
@@ -28,24 +29,43 @@ class App_state_editor(QWidget):
         layout.addWidget(title_label)
         layout.addWidget(id_label)
 
-        debug_save_original_app_manifest_as_json_button = QPushButton("Debug: Save original app manifest as JSON", self)
-        debug_save_original_app_manifest_as_json_button.clicked.connect(self.app.debug_save_original_app_manifest_as_json)
-        layout.addWidget(debug_save_original_app_manifest_as_json_button)
+        debug_toggle_checkbox = QCheckBox("Debug: Toggle")
+        debug_toggle_checkbox.stateChanged.connect(self.toggle_debug)
+        layout.addWidget(debug_toggle_checkbox)
 
-        debug_save_app_manifest_as_json_button = QPushButton("Debug: Save app manifest as JSON", self)
-        debug_save_app_manifest_as_json_button.clicked.connect(self.app.debug_save_app_manifest_as_json)
-        layout.addWidget(debug_save_app_manifest_as_json_button)
+        debug_menu_layout = QVBoxLayout()
 
-        debug_save_depot_info_as_json_button = QPushButton("Debug: Save depot info as JSON", self)
-        debug_save_depot_info_as_json_button.clicked.connect(self.app.debug_save_depot_info_as_json)
-        layout.addWidget(debug_save_depot_info_as_json_button)
+        new_button = QPushButton("Debug: Save original app manifest as JSON", self)
+        new_button.clicked.connect(self.app.debug_save_original_app_manifest_as_json)
+        debug_menu_layout.addWidget(new_button)
 
+        new_button = QPushButton("Debug: Save app manifest as JSON", self)
+        new_button.clicked.connect(self.app.debug_save_app_manifest_as_json)
+        debug_menu_layout.addWidget(new_button)
+        
+        new_button = QPushButton("Debug: Save depot info as JSON", self)
+        new_button.clicked.connect(self.app.debug_save_depot_info_as_json)
+        debug_menu_layout.addWidget(new_button)
+        
+        self.debug_menu.setLayout(debug_menu_layout)
+        self.debug_menu.hide()
+
+        layout.addWidget(self.debug_menu)
+        
         self.setLayout(layout)
         self.setWindowTitle('app state editor; app: ' + self.app.app_name)
 
-        self.geometry().center()
-
         self.update_display()
 
+    def toggle_debug(self):
+        if self.debug_menu.isVisible():
+            self.debug_menu.hide()
+        else:
+            self.debug_menu.show()
+    
     def update_display(self):
-        pass
+        # make the window the minimum size it can be without cutting off any text
+        self.setFixedSize(self.sizeHint())
+        # remove fixed size
+        self.setBaseSize(0, 0)
+        
