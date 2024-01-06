@@ -145,9 +145,22 @@ class App():
                 json.dump(self.get_depot_info(), f, indent=4)
         return True
     
+    def debug_save_manifest_for_newest_app_version_as_json(self):
+        root = tk.Tk()
+        root.withdraw()
+        self.create_debug_folder()
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON", "*.json")], initialfile=f"{self.app_name}_manifest.json", initialdir="debug")
+        root.destroy()
+        if file_path is None:
+            return False
+        if file_path:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(self.get_manifest_for_newest_app_version(), f, indent=4)
+        return True
+
     def get_manifestID_for_newest_app_version(self):
         depot_info = self.get_depot_info()
-        return depot_info[self.app_depot]['manifests']['public']['gid']
+        return depot_info[self.app_id]["branches"]["public"]["buildid"]
     
     def get_depotID_of_app(self):
         return list(self.app_manifest["AppState"]["InstalledDepots"].keys())[0]

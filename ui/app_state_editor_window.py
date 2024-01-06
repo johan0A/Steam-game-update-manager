@@ -46,6 +46,10 @@ class App_state_editor(QWidget):
         new_button = QPushButton("Debug: Save depot info as JSON", self)
         new_button.clicked.connect(self.app.debug_save_depot_info_as_json)
         debug_menu_layout.addWidget(new_button)
+
+        new_button = QPushButton("Debug: Save manifest for newest app version as JSON", self)
+        new_button.clicked.connect(self.app.debug_save_manifest_for_newest_app_version_as_json)
+        debug_menu_layout.addWidget(new_button)
         
         self.debug_menu.setLayout(debug_menu_layout)
         self.debug_menu.hide()
