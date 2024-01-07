@@ -16,3 +16,5 @@ build/
 *.vscode
 .venv/
 venv/
+debug/
+ignore_*.*
