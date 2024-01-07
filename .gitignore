@@ -17,4 +17,4 @@ build/
 .venv/
 venv/
 debug/
-deprecated_*
+notincluded_*
