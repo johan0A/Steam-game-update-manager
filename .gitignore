@@ -17,4 +17,4 @@ build/
 .venv/
 venv/
 debug/
-notincluded_*
+ignore_*.*
