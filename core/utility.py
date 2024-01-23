@@ -177,18 +177,3 @@ class App():
     
     def get_depot_info(self):
         return self.parent_library.steamclient.get_app_depot_info(self.app_id)
-
-    def __repr__(self):
-        return f"App({self.app_name}, {self.app_id}, {self.app_state}, {self.app_depot}, {self.app_manifestID})"
-    
-    def __str__(self):
-        return f"App({self.app_name}, {self.app_id}, {self.app_state}, {self.app_depot}, {self.app_manifestID})"
-    
-    def __eq__(self, other):
-        return self.app_name == other.app_name and self.app_id == other.app_id and self.app_state == other.app_state and self.app_depot == other.app_depot and self.app_manifestID == other.app_manifestID
-    
-    def __hash__(self):
-        return hash((self.app_name, self.app_id, self.app_state, self.app_depot, self.app_manifestID))
-    
-    def __lt__(self, other):
-        return
