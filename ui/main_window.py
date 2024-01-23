@@ -19,10 +19,13 @@ class Main_window(QWidget):
     def initUI(self):
         layout = QVBoxLayout()
 
+        anonynous_login_button = QPushButton("Anonymous Login", self)
+        anonynous_login_button.clicked.connect(self.user_library.steamclient.anonymous_login)
+        layout.addWidget(anonynous_login_button)
+
         self.search_bar = QLineEdit(self)
         self.search_bar.setPlaceholderText("Search for games...")
         self.search_bar.textChanged.connect(self.update_display)
-
         layout.addWidget(self.search_bar)
 
         self.game_widgets = []

@@ -42,11 +42,15 @@ def find_appmanifest_files(directory):
 class Steam_client():
     def __init__(self):
         self.steamclient = steam.client.SteamClient()
-        self.steamclient.anonymous_login()
         self.cdnclient = steam.client.cdn.CDNClient(self.steamclient)
+        self.is_anonymous_loged_in = False
+        self.is_logged_in = False
     
     def anonymous_login(self):
         self.steamclient.anonymous_login()
+        if self.steamclient.logged_on:
+            self.is_anonymous_loged_in = True
+            return True
     
     def get_app_depot_info(self, appID):
         return self.cdnclient.get_app_depot_info(appID)
