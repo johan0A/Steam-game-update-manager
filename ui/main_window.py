@@ -6,6 +6,7 @@ import PyQt5.QtGui as QtGui
 
 from core.utility import User_library
 from ui.app_state_editor_window import App_state_editor
+from ui.steam_login_window import Steam_login_window
 
 class Main_window(QWidget):
     def __init__(self, parent=None):
@@ -19,10 +20,19 @@ class Main_window(QWidget):
     def initUI(self):
         layout = QVBoxLayout()
 
+        anonynous_login_button = QPushButton("Anonymous Login", self)
+        anonynous_login_button.clicked.connect(self.user_library.steamclient.anonymous_login)
+
+        open_steam_login_window_button = QPushButton("Open Steam Login Window", self)
+        open_steam_login_window_button.clicked.connect(lambda: self.open_steam_login_window())
+
+        layout.addWidget(anonynous_login_button)
+        layout.addWidget(open_steam_login_window_button)
+                
+
         self.search_bar = QLineEdit(self)
         self.search_bar.setPlaceholderText("Search for games...")
         self.search_bar.textChanged.connect(self.update_display)
-
         layout.addWidget(self.search_bar)
 
         self.game_widgets = []
@@ -73,3 +83,7 @@ class Main_window(QWidget):
     def open_app_state_editor_window(self, app: App):
         self.app_state_editor_windows = App_state_editor(app)
         self.app_state_editor_windows.show()
+
+    def open_steam_login_window(self):
+        self.steam_login_window = Steam_login_window(self.user_library)
+        self.steam_login_window.show()

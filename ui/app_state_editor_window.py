@@ -69,5 +69,4 @@ class App_state_editor(QWidget):
         self.update_display()
     
     def update_display(self):
-        # make the window the minimum size it can be without cutting off any text
         self.adjustSize()
